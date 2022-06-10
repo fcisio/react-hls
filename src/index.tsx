@@ -68,8 +68,8 @@ function ReactHlsPlayer({
     }
 
     // Check for Media Source support
-    if (Hls.isSupported()) {
-      _initPlayer();
+    if (typeof window !== 'undefined') {
+      Hls.isSupported() && _initPlayer();
     }
 
     return () => {
@@ -80,7 +80,9 @@ function ReactHlsPlayer({
   }, [autoPlay, hlsConfig, playerRef, src]);
 
   // If Media Source is supported, use HLS.js to play video
-  if (Hls.isSupported()) return <video ref={playerRef} {...props} />;
+  if (typeof window !== 'undefined') {
+    if (Hls.isSupported()) return <video ref={playerRef} {...props} />;
+  }
 
   // Fallback to using a regular video player if HLS is supported by default in the user's browser
   return <video ref={playerRef} src={src} autoPlay={autoPlay} {...props} />;
